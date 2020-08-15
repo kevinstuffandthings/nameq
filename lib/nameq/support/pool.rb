@@ -4,11 +4,7 @@ module NameQ
     class Pool
       def take(name)
         return list.add(name) unless list.include?(name)
-        entry = entry_factory.new(name)
-        suffixes.each do |suffix|
-          resolution = entry.resolve(suffix)
-          return list.add(resolution) unless list.include?(resolution)
-        end
+        resolve(entry_factory.new(name)).tap { |n| list.add(n) }
       end
 
       protected
@@ -24,6 +20,13 @@ module NameQ
       end
 
       private
+
+      def resolve(entry)
+        suffixes.each do |suffix|
+          resolution = entry.resolve(suffix)
+          return resolution unless list.include?(resolution)
+        end
+      end
 
       def suffixes
         (1 .. Float::INFINITY).lazy.map { |i| Suffix.new(i) }

@@ -1,9 +1,10 @@
 module NameQ
   module Support
     describe Pool do
-      context 'internals' do
-        let(:subject) { described_class.new(nil) }
+      let(:list) { instance_double(NameQ::Support::List) }
+      let(:subject) { described_class.new(list) }
 
+      context 'internals' do
         describe '#suffixes' do
           let(:suffixes) { subject.send(:suffixes) }
 
@@ -29,13 +30,48 @@ module NameQ
             expect(subject.send(:entry_factory)).to eq NameQ::Support::StringEntry
           end
         end
+
+        describe '#resolve' do
+          let(:resolution) { double }
+          let(:entry) { instance_double(NameQ::Support::StringEntry, resolve: resolution) }
+          let(:suffixes) { 3.times.map { |i| instance_double(NameQ::Support::Suffix, index: (i + 1) * 8) } }
+          before(:each) do
+            allow(subject).to receive(:suffixes).and_return suffixes
+            allow(list).to receive(:include?).and_return true
+            allow(list).to receive(:include?).with(resolution).and_return false
+          end
+
+          it 'can hit on the first try' do
+            expect(subject.send(:resolve, entry)).to eq resolution
+          end
+
+          it 'can hit... eventually...' do
+            [0, 1].each { |i| allow(entry).to receive(:resolve).with(suffixes[i]).and_return double }
+            expect(subject.send(:resolve, entry)).to eq resolution
+          end
+        end
       end
 
-      xdescribe '#take' do
+      describe '#take' do
+        let(:name) { double }
+
         it 'can take a name when available' do
+          allow(list).to receive(:include?).with(name).and_return false
+          expect(list).to receive(:add).with(name).and_return name
+          expect(subject.take(name)).to eq name
         end
 
-        it 'can fall back a few when needed' do
+        context 'fallback' do
+          let(:entry) { double }
+          let(:resolved_name) { double }
+          before(:each) { allow(subject.send(:entry_factory)).to receive(:new).with(name).and_return entry }
+
+          it 'can fall back a few when needed' do
+            allow(list).to receive(:include?).with(name).and_return true
+            expect(subject).to receive(:resolve).with(entry).and_return resolved_name
+            expect(list).to receive(:add).with(resolved_name)
+            expect(subject.take(name)).to eq resolved_name
+          end
         end
       end
     end
