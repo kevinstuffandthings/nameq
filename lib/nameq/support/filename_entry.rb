@@ -7,7 +7,8 @@ module NameQ
       def resolve(suffix = nil)
         return @text if suffix.nil?
         extension = File.extname(@text)
-        "#{@text.chomp(extension)}#{suffix}#{extension}"
+        basename = suffix.strip(@text.chomp(extension))
+        "#{basename}#{suffix}#{extension}"
       end
     end
   end

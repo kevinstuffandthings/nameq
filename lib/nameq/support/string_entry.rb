@@ -8,7 +8,7 @@ module NameQ
 
       def resolve(suffix = nil)
         return @text if suffix.nil?
-        "#{@text}#{suffix}"
+        "#{suffix.strip(@text)}#{suffix}"
       end
     end
   end

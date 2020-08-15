@@ -6,6 +6,8 @@ module NameQ
 
       describe '#resolve' do
         let(:suffix) { instance_double(NameQ::Support::Suffix, to_s: '-yup') }
+        let(:stripped_text) { "#{text} stripped" }
+        before(:each) { allow(suffix).to receive(:strip).with(text).and_return stripped_text }
 
         context 'without extension' do
           it 'resolves itself without a suffix' do
@@ -13,7 +15,7 @@ module NameQ
           end
 
           it 'resolves itself with a suffix' do
-            expect(subject.resolve(suffix)).to eq "#{text}#{suffix}"
+            expect(subject.resolve(suffix)).to eq "#{stripped_text}#{suffix}"
           end
         end
 
@@ -26,7 +28,7 @@ module NameQ
           end
 
           it 'resolves itself with a suffix' do
-            expect(subject.resolve(suffix)).to eq "#{text}#{suffix}#{extension}"
+            expect(subject.resolve(suffix)).to eq "#{stripped_text}#{suffix}#{extension}"
           end
         end
       end
