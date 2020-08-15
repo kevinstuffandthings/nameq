@@ -6,7 +6,7 @@ module NameQ
 
       def initialize(index, template: nil)
         @index = index
-        @template = ' (%{index})'
+        @template = template || ' (%{index})'
       end
 
       def to_s
