@@ -2,6 +2,10 @@
 module NameQ
   module Support
     class Pool
+      # Take a name from the available pool of names,
+      # suffixed if necessary.
+      # @param name [String] the name to find a variant of within the pool
+      # @return [String] the resolved name from the pool
       def take(name)
         return list.add(name) unless list.include?(name)
         resolve(entry_factory.new(name)).tap { |n| list.add(n) }
