@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require_relative './string_entry'
+
+require_relative "./string_entry"
 
 module NameQ
   module Support

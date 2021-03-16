@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module NameQ
   module Support
     class Pool
@@ -33,7 +34,7 @@ module NameQ
       end
 
       def suffixes
-        (1 .. Float::INFINITY).lazy.map { |i| Suffix.new(i) }
+        (1..Float::INFINITY).lazy.map { |i| Suffix.new(i) }
       end
     end
   end
