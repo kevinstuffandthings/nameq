@@ -1,4 +1,4 @@
-# NameQ [![Build Status](https://travis-ci.com/kevinstuffandthings/nameq.svg?branch=master)](https://travis-ci.com/kevinstuffandthings/nameq) [![Gem Version](https://badge.fury.io/rb/nameq.svg)](https://badge.fury.io/rb/nameq)
+# NameQ ![Build Status](https://github.com/kevinstuffandthings/nameq/actions/workflows/ruby.yml/badge.svg) [![Gem Version](https://badge.fury.io/rb/nameq.svg)](https://badge.fury.io/rb/nameq)
 
 For when you need to name things, but not worry about whether or not those names are already taken.
 
